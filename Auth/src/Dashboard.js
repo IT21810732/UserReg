@@ -2,7 +2,7 @@ import { Text, StyleSheet, SafeAreaView, TouchableOpacity, View } from 'react-na
 import React, { useState, useEffect } from 'react';
 import { firebase } from '../config';
 
-const Dashboard = () => {
+const Dashboard = ({ navigation }) => { // Pass navigation prop
     const [name, setName] = useState('');
 
     useEffect(() => {
@@ -11,7 +11,7 @@ const Dashboard = () => {
                 const snapshot = await firebase.firestore().collection('users')
                     .doc(firebase.auth().currentUser.uid).get();
                 if (snapshot.exists) {
-                    setName(snapshot.data());
+                    setName(snapshot.data().firstName); // Update to get firstName only
                 } else {
                     console.log('User does not exist');
                 }
@@ -27,7 +27,7 @@ const Dashboard = () => {
         <SafeAreaView style={styles.container}>
             <View style={styles.content}>
                 <Text style={styles.greetingText}>
-                    Hello, {name.firstName}
+                    Hello, {name}
                 </Text>
 
                 <TouchableOpacity
@@ -36,6 +36,15 @@ const Dashboard = () => {
                 >
                     <Text style={styles.buttonText}>
                         Sign Out
+                    </Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                    onPress={() => navigation.navigate('Characters')}
+                    style={[styles.button, { marginTop: 20 }]}
+                >
+                    <Text style={styles.buttonText}>
+                        Characters
                     </Text>
                 </TouchableOpacity>
             </View>

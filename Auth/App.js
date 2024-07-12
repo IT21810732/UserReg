@@ -5,7 +5,7 @@ import { firebase } from './config';
 import Login from './src/Login';
 import Registration from './src/Registration';
 import Dashboard from './src/Dashboard';
-
+import Characters from './src/Characters'; // Import Characters component
 
 const Stack = createStackNavigator();
 
@@ -47,13 +47,29 @@ function App() {
             />
           </>
         ) : (
-          <Stack.Screen
-            name="Dashboard"
-            component={Dashboard}
-            options={{
-              headerShown: false,
-            }}
-          />
+          <>
+            <Stack.Screen
+              name="Dashboard"
+              component={Dashboard}
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="Characters"
+              component={Characters}
+              options={{
+                title: 'Characters',
+                headerStyle: {
+                  backgroundColor: '#2b2b2a',
+                },
+                headerTintColor: '#fff',
+                headerTitleStyle: {
+                  fontWeight: 'bold',
+                },
+              }}
+            />
+          </>
         )}
       </Stack.Navigator>
     </NavigationContainer>
