@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, FlatList, Image, ActivityIndicator, Dimensions, Modal, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Image, ActivityIndicator, ScrollView, Dimensions, Modal, TouchableOpacity } from 'react-native';
 
 const Characters = ({ navigation }) => {
   const [characters, setCharacters] = useState([]);
@@ -30,7 +30,7 @@ const Characters = ({ navigation }) => {
     setSelectedCharacter(null);
   };
 
-  const numColumns = 4; 
+  const numColumns = 7; 
 
   if (loading) {
     return (
@@ -41,29 +41,30 @@ const Characters = ({ navigation }) => {
   }
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Game of Thrones Characters</Text>
-      <FlatList
-        data={characters}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            style={styles.characterItem}
-            onPress={() => openCharacterDetails(item)}
-          >
-            <Image
-              source={{ uri: item.imageUrl }}
-              style={styles.characterImage}
-              resizeMode="cover"
-            />
-            <Text style={styles.characterName}>{item.fullName}</Text>
-          </TouchableOpacity>
-        )}
-        numColumns={numColumns}
-        contentContainerStyle={styles.flatListContent}
-      />
+    <ScrollView contentContainerStyle={styles.scrollContainer}>
+      <View style={styles.container}>
+        <Text style={styles.title}>Game of Thrones Characters</Text>
+        <FlatList
+          data={characters}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              style={styles.characterItem}
+              onPress={() => openCharacterDetails(item)}
+            >
+              <Image
+                source={{ uri: item.imageUrl }}
+                style={styles.characterImage}
+                resizeMode="cover"
+              />
+              <Text style={styles.characterName}>{item.fullName}</Text>
+            </TouchableOpacity>
+          )}
+          numColumns={numColumns}
+        />
+      </View>
 
-      {/* Character Details Modal */}
+     
       <Modal
         animationType="slide"
         transparent={true}
@@ -85,7 +86,7 @@ const Characters = ({ navigation }) => {
           </View>
         </View>
       </Modal>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -98,8 +99,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#2b2b2a',
   },
+  scrollContainer: {
+    flexGrow: 1,
+    backgroundColor: '#2b2b2a',
+    paddingVertical: 20,
+  },
   container: {
-    flex: 1,
     backgroundColor: '#2b2b2a',
     paddingHorizontal: 10,
   },
@@ -111,6 +116,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   characterItem: {
+    flex: 1,
     alignItems: 'center',
     margin: 5,
     width: Dimensions.get('window').width / 2 - 20,
@@ -173,8 +179,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     color: '#000',
-  },
-  flatListContent: {
-    paddingBottom: 100, 
   },
 });

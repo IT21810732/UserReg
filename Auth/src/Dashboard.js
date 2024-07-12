@@ -2,7 +2,7 @@ import { Text, StyleSheet, SafeAreaView, TouchableOpacity, View } from 'react-na
 import React, { useState, useEffect } from 'react';
 import { firebase } from '../config';
 
-const Dashboard = ({ navigation }) => { // Pass navigation prop
+const Dashboard = ({ navigation }) => {
     const [name, setName] = useState('');
 
     useEffect(() => {
@@ -11,7 +11,7 @@ const Dashboard = ({ navigation }) => { // Pass navigation prop
                 const snapshot = await firebase.firestore().collection('users')
                     .doc(firebase.auth().currentUser.uid).get();
                 if (snapshot.exists) {
-                    setName(snapshot.data().firstName); // Update to get firstName only
+                    setName(snapshot.data().firstName);
                 } else {
                     console.log('User does not exist');
                 }
@@ -31,15 +31,6 @@ const Dashboard = ({ navigation }) => { // Pass navigation prop
                 </Text>
 
                 <TouchableOpacity
-                    onPress={() => firebase.auth().signOut()}
-                    style={styles.button}
-                >
-                    <Text style={styles.buttonText}>
-                        Sign Out
-                    </Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity
                     onPress={() => navigation.navigate('Characters')}
                     style={[styles.button, { marginTop: 20 }]}
                 >
@@ -48,6 +39,16 @@ const Dashboard = ({ navigation }) => { // Pass navigation prop
                     </Text>
                 </TouchableOpacity>
             </View>
+
+            {/* Sign Out Button */}
+            <TouchableOpacity
+                onPress={() => firebase.auth().signOut()}
+                style={[styles.button, styles.signOutButton]}
+            >
+                <Text style={styles.buttonText}>
+                    Sign Out
+                </Text>
+            </TouchableOpacity>
         </SafeAreaView>
     );
 };
@@ -62,6 +63,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#2b2b2a',
     },
     content: {
+        flex: 1,
+        justifyContent: 'center',
         alignItems: 'center',
     },
     greetingText: {
@@ -82,5 +85,9 @@ const styles = StyleSheet.create({
         fontSize: 22,
         fontWeight: 'bold',
         color: '#fff',
+    },
+    signOutButton: {
+        position: 'absolute',
+        bottom: 40, 
     },
 });
